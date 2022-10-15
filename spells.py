@@ -3,10 +3,11 @@ from game_constants import Element
 
 
 class Spell(ABC):
-    def __init__(self, name, base_mp_cost, elements):
+    def __init__(self, name, base_mp_cost, elements, description):
         self.name = name
         self.base_mp_cost = base_mp_cost
         self.elements = elements
+        self.description = description
 
     def __str__(self):
         return self.name
@@ -27,7 +28,7 @@ class Spell(ABC):
 
 class Fireball(Spell):
     def __init__(self):
-        super().__init__(name='Fireball', base_mp_cost=40, elements=[Element.Fire])
+        super().__init__(name='Fireball', base_mp_cost=40, elements=[Element.Fire], description='Deals fire damage')
     
     def activate(self, user, target=None, context=None):
         self.drain_mp(user)

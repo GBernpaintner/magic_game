@@ -14,6 +14,9 @@ class Spell(ABC):
 
     def __str__(self):
         return self.name
+    
+    def __repr__(self):
+        return str(self)
 
     def mp_cost(self, user=None, target=None, context=None):
         """Returns the actual mp cost of the spell.
@@ -59,7 +62,7 @@ class Waterblast(Spell):
 
 class Inferno(Spell):
     def __init__(self):
-        super.__init__(name='Inferno', base_mp_cost=150, elements=[Element.Fire], description='A supreme display of fire mastery', complexity=Complexity.Rare)
+        super().__init__(name='Inferno', base_mp_cost=150, elements=[Element.Fire], description='A supreme display of fire mastery', complexity=Complexity.Rare)
 
     def activate(self, user, target, context=None):
         self.drain_mp(user)
@@ -69,7 +72,7 @@ class Inferno(Spell):
 class Spellbook:
     def __init__(self, spells):
         self.spells = [*spells]
-        self.weights = [spell.complexity for spell in self.spells]
+        self.weights = [spell.complexity.value for spell in self.spells]
     
     def draw_spells(self, n_spells=3):
         """Returns n spells from the spellbook.
@@ -79,9 +82,12 @@ class Spellbook:
         complexity every time the spell is not drawn. Once a spell
         has been drawn, its weight is reset to its complexity."""
 
+        result = []
         for _ in range(n_spells):
             spell = weighted_choice(self.spells, self.weights)
             self.weights[self.spells.index(spell)] = 0
+            result.append(spell)
         for i, spell in enumerate(self.spells):
-            self.weights[i] += spell.complexity
+            self.weights[i] += spell.complexity.value
+        return result
             

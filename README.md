@@ -1,1 +1,1 @@
-# magic_game
+# The Infinite Library
